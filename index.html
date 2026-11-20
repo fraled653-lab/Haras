@@ -1785,6 +1785,9 @@
             if (state.scenarioMode === 'actuel') {
                 act.nbActuel = Math.max(0, (Number(act.nbActuel) || 0) + delta);
             } else {
+                // Garde le registre fictif positionné sur la catégorie modifiée :
+                // le panneau des chevaux est affiché dans l'onglet Activités.
+                state.selectedActivityId = actId;
                 if (!Array.isArray(state.targetHorses)) state.targetHorses = [];
                 if (delta > 0) {
                     for (let i = 0; i < delta; i++) createTargetHorseForActivity(actId);
@@ -1808,6 +1811,10 @@
             if (state.scenarioMode === 'actuel') {
                 act.nbActuel = parsed;
             } else {
+                // Si l'effectif est saisi directement depuis le tableau de bord,
+                // afficher ensuite le registre de la même catégorie.
+                state.selectedActivityId = actId;
+                if (!Array.isArray(state.targetHorses)) state.targetHorses = [];
                 const delta = parsed - (Number(act.nbVise) || 0);
                 if (delta > 0) {
                     for (let i = 0; i < delta; i++) createTargetHorseForActivity(actId);
